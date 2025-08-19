@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVSU - Student Club Management System</title>
+    <link rel="stylesheet" href="css/nvsu-styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="all.min.css">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .login-title {
+            text-align: center;
+            color: #006837;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #006837;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            display: block;
+            color: #006837;
+            text-decoration: none;
+        }
+        
+        /* Adjust welcome screen title */
+        .system-title {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="nvsu-header">
+        <div class="header-content">
+            <img src="nvsulogo.png" alt="NVSU Logo" class="header-logo">
+            <div class="header-titles">
+                <h1>Nueva Vizcaya State University</h1>
+                <h2>Office of Student Affairs</h2>
+                <h3>Student Club Management System</h3>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Welcome Screen -->
+        <section class="welcome-screen" id="welcomeScreen">
+            <div class="university-branding">
+                <img src="nvsulogo.png" alt="NVSU Seal" class="university-logo">
+                <h2 class="system-title">Student Club Management</h2>
+            </div>
+            
+            <div class="access-options">
+                <button class="access-btn admin-btn" onclick="showLoginModal('admin')">
+                    <i class="fas fa-user-shield icon"></i>
+                    Administrator Access
+                </button>
+                <button class="access-btn student-btn" onclick="showLoginModal('student')">
+                    <i class="fas fa-user-graduate icon"></i>
+                    Student Access
+                </button>
+            </div>
+            
+            <footer class="welcome-footer">
+                <p>For assistance, please contact the OSA at <a href="mailto:osa@nvsu.edu.ph">osa@nvsu.edu.ph</a></p>
+            </footer>
+        </section>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+                <h2 class="login-title" id="modalLoginTitle">Login</h2>
+                
+                <form class="login-form" id="modalLoginForm">
+                    <div class="form-group">
+                        <label for="modalIdNumber">ID NUMBER</label>
+                        <input type="text" id="modalIdNumber" placeholder="Enter your ID number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalPassword">PASSWORD</label>
+                        <input type="password" id="modalPassword" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Login</button>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Screen -->
+        <section class="dashboard-screen" id="dashboardScreen" style="display:none;">
+            <nav class="dashboard-nav">
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40" alt="User" class="user-avatar">
+                    <span class="user-name">John Doe</span>
+                    <span class="user-role" id="userRoleDisplay">Student</span>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt icon"></i> Sign Out
+                </button>
+            </nav>
+            
+            <div class="dashboard-content">
+                <header class="content-header">
+                    <h2>Student Organization Dashboard</h2>
+                    <div class="current-date">August 17, 2025</div>
+                </header>
+                
+                <div class="dashboard-widgets">
+                    <!-- Widgets would go here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let currentRole = 'student';
+        
+        // Show login modal for selected role
+        function showLoginModal(role) {
+            currentRole = role;
+            const modal = document.getElementById('loginModal');
+            const title = document.getElementById('modalLoginTitle');
+            
+            title.textContent = role === 'admin' ? 'Administrator Login' : 'Student Login';
+            modal.style.display = 'block';
+        }
+        
+        // Close login modal
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('modalIdNumber').value = '';
+            document.getElementById('modalPassword').value = '';
+        }
+        
+        // Handle modal form submission
+        document.getElementById('modalLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const idNumber = document.getElementById('modalIdNumber').value;
+            const password = document.getElementById('modalPassword').value;
+            
+            // Basic validation
+            if (!idNumber || !password) {
+                alert('Please enter both ID number and password');
+                return;
+            }
+            
+            // Show loading state
+            document.querySelector('#modalLoginForm .login-btn').textContent = 'Authenticating...';
+            
+            // Simulate authentication (replace with real API call)
+            setTimeout(() => {
+                // For demo, any non-empty password works
+                if (password.length > 0) {
+                    // Successful login
+                    closeLoginModal();
+                    document.getElementById('userRoleDisplay').textContent = 
+                        currentRole === 'admin' ? 'Administrator' : 'Student';
+                    document.getElementById('welcomeScreen').style.display = 'none';
+                    document.getElementById('dashboardScreen').style.display = 'block';
+                } else {
+                    alert('Invalid credentials. Please try again.');
+                }
+                
+                // Reset login button
+                document.querySelector('#modalLoginForm .login-btn').textContent = 'Login';
+            }, 1000);
+        });
+        
+        // Logout function
+        function logout() {
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'block';
+        }
+        
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target == modal) {
+                closeLoginModal();
+            }
+        }
+    </script>
+</body>
+</html>

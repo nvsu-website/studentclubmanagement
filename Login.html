@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVSU - Student Club Management System</title>
+    <link rel="stylesheet" href="css/nvsu-styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Additional styles for the login form */
+        .login-container {
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .login-title {
+            text-align: center;
+            color: #006837;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #006837;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            display: block;
+            color: #006837;
+            text-decoration: none;
+        }
+        
+        .role-selection {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .role-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #006837;
+            background: white;
+            color: #006837;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .role-btn.active {
+            background: #006837;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="nvsu-header">
+        <div class="header-content">
+            <img src="https://www.nvsu.edu.ph/assets/img/nvsulogo.png" alt="NVSU Logo" class="header-logo">
+            <div class="header-titles">
+                <h1>Nueva Vizcaya State University</h1>
+                <h2>Office of Student Affairs</h2>
+                <h3>Student Club Management System</h3>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Login Screen (now the main screen) -->
+        <section class="login-container" id="loginScreen">
+            <h1 class="login-title">Login</h1>
+            
+            <div class="role-selection">
+                <button class="role-btn active" id="studentBtn" onclick="setRole('student')">
+                    Student Login
+                </button>
+                <button class="role-btn" id="adminBtn" onclick="setRole('admin')">
+                    Administrator Login
+                </button>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="idNumber">ID NUMBER</label>
+                    <input type="text" id="idNumber" placeholder="Enter your ID number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">PASSWORD</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Login</button>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </form>
+        </section>
+
+        <!-- Dashboard Screen (hidden initially) -->
+        <section class="dashboard-screen" id="dashboardScreen" style="display:none;">
+            <nav class="dashboard-nav">
+                <div class="user-profile">
+                    <img src="https://via.placeholder.com/40" alt="User" class="user-avatar">
+                    <span class="user-name">John Doe</span>
+                    <span class="user-role" id="userRoleDisplay">Student</span>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt icon"></i> Sign Out
+                </button>
+            </nav>
+            
+            <div class="dashboard-content">
+                <header class="content-header">
+                    <h2>Student Organization Dashboard</h2>
+                    <div class="current-date">August 17, 2025</div>
+                </header>
+                
+                <div class="dashboard-widgets">
+                    <!-- Widgets would go here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        let currentRole = 'student';
+        
+        // Set the active role (student or admin)
+        function setRole(role) {
+            currentRole = role;
+            document.getElementById('studentBtn').classList.remove('active');
+            document.getElementById('adminBtn').classList.remove('active');
+            document.getElementById(role + 'Btn').classList.add('active');
+        }
+        
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const idNumber = document.getElementById('idNumber').value;
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (!idNumber || !password) {
+                alert('Please enter both ID number and password');
+                return;
+            }
+            
+            // In a real app, you would verify credentials with server here
+            loginUser(idNumber, password, currentRole);
+        });
+        
+        // Simulate login (replace with actual authentication)
+        function loginUser(idNumber, password, role) {
+            // Show loading state
+            document.querySelector('.login-btn').textContent = 'Authenticating...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // For demo purposes, any non-empty password works
+                if (password.length > 0) {
+                    // Successful login
+                    document.getElementById('userRoleDisplay').textContent = 
+                        role === 'admin' ? 'Administrator' : 'Student';
+                    document.getElementById('loginScreen').style.display = 'none';
+                    document.getElementById('dashboardScreen').style.display = 'block';
+                } else {
+                    alert('Invalid credentials. Please try again.');
+                }
+                
+                // Reset login button
+                document.querySelector('.login-btn').textContent = 'Login';
+            }, 1000);
+        }
+        
+        // Logout function
+        function logout() {
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('idNumber').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
+</body>
+</html>

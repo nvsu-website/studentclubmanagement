@@ -1,0 +1,2225 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NVSU - Student Club Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        .nvsu-header {
+            background: linear-gradient(135deg, #006837 0%, #003d1f 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .header-logo {
+            height: 80px;
+            margin-right: 20px;
+        }
+        
+        .header-titles h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .header-titles h2 {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+        
+        .header-titles h3 {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        /* Welcome Screen */
+        .welcome-screen {
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        
+        .university-branding {
+            margin-bottom: 40px;
+        }
+        
+        .university-logo {
+            height: 150px;
+            margin-bottom: 20px;
+        }
+        
+        .system-title {
+            font-size: 2.2rem;
+            color: #006837;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+        
+        .access-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        
+        .access-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 18px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .admin-btn {
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+        }
+        
+        .student-btn {
+            background: linear-gradient(to right, #F2A900, #e69500);
+            color: white;
+        }
+        
+        .access-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+        
+        .access-btn .icon {
+            font-size: 1.5rem;
+        }
+        
+        .welcome-footer {
+            color: #666;
+            font-size: 0.95rem;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .welcome-footer a {
+            color: #006837;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .welcome-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            position: relative;
+            animation: modalAppear 0.4s ease-out;
+        }
+        
+        @keyframes modalAppear {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: #333;
+            transform: scale(1.1);
+        }
+        
+        .login-title {
+            text-align: center;
+            color: #006837;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #006837;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 104, 55, 0.1);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .login-btn:hover {
+            background: linear-gradient(to right, #00552d, #002d16);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .forgot-password, .register-link {
+            text-align: center;
+            display: block;
+            color: #006837;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            margin-top: 10px;
+        }
+        
+        .forgot-password:hover, .register-link:hover {
+            color: #003d1f;
+            text-decoration: underline;
+        }
+        
+        .form-toggle {
+            text-align: center;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Dashboard Screen */
+        .dashboard-screen {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+        }
+        
+        .dashboard-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            background: linear-gradient(135deg, #006837 0%, #003d1f 100%);
+            color: white;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .user-role {
+            background: rgba(255,255,255,0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .logout-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+        
+        .dashboard-content {
+            padding: 25px;
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .content-header h2 {
+            font-size: 1.5rem;
+            color: #006837;
+        }
+        
+        .current-date {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .dashboard-widgets h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #003d1f;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        /* Club cards */
+        .club-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: all 0.3s;
+        }
+        
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border-color: #e0e0e0;
+        }
+        
+        .club-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .club-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #006837;
+        }
+        
+        .club-fee {
+            background: linear-gradient(to right, #F2A900, #e69500);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        
+        .club-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .club-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .join-btn {
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .join-btn:hover {
+            background: linear-gradient(to right, #00552d, #002d16);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .club-status {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .status-pending {
+            color: #F2A900;
+        }
+        
+        .status-member {
+            color: #006837;
+        }
+        
+        /* Updated GCash Payment Styles */
+        .payment-details {
+            margin-bottom: 5px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #006837;
+        }
+        
+        .payment-details h3 {
+            color: #006837;
+            margin-bottom: 8px;
+        }
+        
+        .payment-details p {
+            margin-bottom: 5px;
+            color: #555;
+        }
+        
+        .gcash-qr-container {
+            text-align: center;
+            margin: 5px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .gcash-qr {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+        }
+        
+        .gcash-qr-container p {
+            margin-top: 8px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .payment-instructions {
+            background-color: #f0f8ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #4da6ff;
+        }
+        
+        .payment-instructions h4 {
+            color: #0066cc;
+            margin-bottom: 8px;
+        }
+        
+        .payment-instructions ol {
+            padding-left: 25px;
+        }
+        
+        .payment-instructions li {
+            margin-bottom: 5px;
+            color: #444;
+        }
+        
+        .payment-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .payment-cancel-btn {
+            background: linear-gradient(to right, #666, #555) !important;
+        }
+        
+        .payment-cancel-btn:hover {
+            background: linear-gradient(to right, #555, #444) !important;
+        }
+        
+        /* Success Modal */
+        .success-icon {
+            font-size: 60px;
+            color: #006837;
+            margin: 20px 0;
+            animation: successPulse 1.5s infinite;
+        }
+        
+        @keyframes successPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+        }
+        
+        .admin-controls {
+            margin-top: 30px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .admin-controls h3 {
+            margin-bottom: 15px;
+            color: #006837;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .admin-action-btn {
+            padding: 12px 20px;
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 200px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .admin-action-btn:hover {
+            background: linear-gradient(to right, #00552d, #002d16);
+            transform: translateY(-2px);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        
+        .data-table th {
+            background: #006837;
+            color: white;
+            text-align: left;
+            padding: 12px 15px;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f0f7f0;
+        }
+        
+        /* Database Management */
+        .database-section {
+            margin-top: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .database-section h3 {
+            margin-bottom: 20px;
+            color: #006837;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .db-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .db-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .db-btn:hover {
+            background: linear-gradient(to right, #00552d, #002d16);
+            transform: translateY(-2px);
+        }
+        
+        .db-backup {
+            background: linear-gradient(to right, #F2A900, #e69500);
+        }
+        
+        .db-backup:hover {
+            background: linear-gradient(to right, #e69500, #d08a00);
+        }
+        
+        .db-export {
+            background: linear-gradient(to right, #4da6ff, #0077cc);
+        }
+        
+        .db-export:hover {
+            background: linear-gradient(to right, #0077cc, #0066b3);
+        }
+        
+        /* Management Sections */
+        .management-section {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: none;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            color: #006837;
+            font-size: 1.3rem;
+        }
+        
+        .close-section {
+            background: #f1f1f1;
+            color: #666;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .close-section:hover {
+            background: #e5e5e5;
+        }
+        
+        .action-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        
+        .add-btn {
+            background: linear-gradient(to right, #006837, #003d1f);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .add-btn:hover {
+            background: linear-gradient(to right, #00552d, #002d16);
+            transform: translateY(-2px);
+        }
+        
+        /* Password Recovery */
+        .recovery-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+        
+        .recovery-step {
+            text-align: center;
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .step-number {
+            width: 30px;
+            height: 30px;
+            background: #006837;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .step-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .active-step .step-number {
+            background: #F2A900;
+        }
+        
+        .active-step .step-text {
+            color: #006837;
+            font-weight: 500;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .header-logo {
+                margin: 0 auto 15px;
+            }
+            
+            .access-options {
+                flex-direction: column;
+            }
+            
+            .content-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .club-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+            
+            .club-actions {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+            
+            .admin-action-btn {
+                min-width: 100%;
+            }
+            
+            .db-actions {
+                flex-direction: column;
+            }
+            
+            .recovery-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="nvsu-header">
+        <div class="header-content">
+            <img src="https://www.nvsu.edu.ph/assets/img/nvsulogo.png" alt="NVSU Logo" class="header-logo">
+            <div class="header-titles">
+                <h1>Nueva Vizcaya State University</h1>
+                <h2>Office of Student Affairs</h2>
+                <h3>Student Club Management System</h3>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <!-- Welcome Screen -->
+        <section class="welcome-screen" id="welcomeScreen">
+            <div class="university-branding">
+                <img src="https://www.nvsu.edu.ph/assets/img/nvsulogo.png" alt="NVSU Seal" class="university-logo">
+                <h2 class="system-title">Student Club Management</h2>
+            </div>
+            
+            <div class="access-options">
+                <button class="access-btn admin-btn" onclick="showLoginModal('admin')">
+                    <i class="fas fa-user-shield icon"></i>
+                    Administrator Access
+                </button>
+                <button class="access-btn student-btn" onclick="showLoginModal('student')">
+                    <i class="fas fa-user-graduate icon"></i>
+                    Student Access
+                </button>
+            </div>
+            
+            <footer class="welcome-footer">
+                <p>For assistance, please contact the <span lang="en-ph">SAS</span> at 
+                <a href="mailto:osa@nvsu.edu.ph">@nvsu.edu.ph</a></p>
+            </footer>
+        </section>
+
+        <!-- Login Modal -->
+        <div id="loginModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+                <h2 class="login-title" id="modalLoginTitle">Login</h2>
+                
+                <form class="login-form" id="modalLoginForm">
+                    <div class="form-group">
+                        <label for="modalIdNumber">ID NUMBER</label>
+                        <input type="text" id="modalIdNumber" placeholder="Enter your ID number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="modalPassword">PASSWORD</label>
+                        <input type="password" id="modalPassword" placeholder="Enter your password" required>
+                        <a href="#" class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">Login</button>
+                    
+                    <div class="form-toggle">
+                        <a href="#" class="register-link" id="registerLink">Register as <span id="roleText">Student</span></a>
+                    </div>
+                </form>
+                
+                <!-- Registration Form (Initially hidden) -->
+                <form class="login-form" id="modalRegisterForm" style="display: none;">
+                    <div class="form-group">
+                        <label for="regFullName">FULL NAME</label>
+                        <input type="text" id="regFullName" placeholder="Enter your full name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regIdNumber">ID NUMBER</label>
+                        <input type="text" id="regIdNumber" placeholder="Enter your ID number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regPassword">PASSWORD</label>
+                        <input type="password" id="regPassword" placeholder="Create a password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="regConfirmPassword">CONFIRM PASSWORD</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                    </div>
+                    
+                    <div id="studentFields">
+                        <div class="form-group">
+                            <label for="regProgram">PROGRAM</label>
+                            <select id="regProgram" required>
+                                <option value="">Select your program</option>
+                                <option value="BSIT">BS Information Technology</option>
+                                <option value="BSCS">BS Computer Science</option>
+                                <option value="BSA">BS Accountancy</option>
+                                <option value="BSE">BS Education</option>
+                                <option value="BSN">BS Nursing</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="regYearLevel">YEAR LEVEL</label>
+                            <select id="regYearLevel" required>
+                                <option value="">Select year level</option>
+                                <option value="1st">1st Year</option>
+                                <option value="2nd">2nd Year</option>
+                                <option value="3rd">3rd Year</option>
+                                <option value="4th">4th Year</option>
+                                <option value="5th">5th Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div id="adminCodeField" style="display: none;">
+                        <div class="form-group">
+                            <label for="adminCode">ADMIN CODE</label>
+                            <input type="password" id="adminCode" placeholder="Enter admin code" required>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="login-btn" onclick="registerUser()">Register</button>
+                    
+                    <div class="form-toggle">
+                        <a href="#" class="register-link" onclick="toggleLoginForm()">Back to Login</a>
+                    </div>
+                </form>
+                
+                <!-- Forgot Password Form -->
+                <form class="login-form" id="forgotPasswordForm" style="display: none;">
+                    <div class="recovery-steps">
+                        <div class="recovery-step active-step" id="step1">
+                            <div class="step-number">1</div>
+                            <div class="step-text">Enter ID</div>
+                        </div>
+                        <div class="recovery-step" id="step2">
+                            <div class="step-number">2</div>
+                            <div class="step-text">Verify</div>
+                        </div>
+                        <div class="recovery-step" id="step3">
+                            <div class="step-number">3</div>
+                            <div class="step-text">Reset</div>
+                        </div>
+                    </div>
+                    
+                    <div id="step1Content">
+                        <div class="form-group">
+                            <label for="forgotIdNumber">ID NUMBER</label>
+                            <input type="text" id="forgotIdNumber" placeholder="Enter your ID number" required>
+                        </div>
+                        <button type="button" class="login-btn" onclick="nextStep(2)">Next</button>
+                    </div>
+                    
+                    <div id="step2Content" style="display: none;">
+                        <div class="form-group">
+                            <label for="securityAnswer">What is your mother's maiden name?</label>
+                            <input type="text" id="securityAnswer" placeholder="Enter answer" required>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="login-btn" style="flex: 1;" onclick="nextStep(1)">Back</button>
+                            <button type="button" class="login-btn" style="flex: 1;" onclick="verifySecurityAnswer()">Verify</button>
+                        </div>
+                    </div>
+                    
+                    <div id="step3Content" style="display: none;">
+                        <div class="form-group">
+                            <label for="newPassword">NEW PASSWORD</label>
+                            <input type="password" id="newPassword" placeholder="Enter new password" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmNewPassword">CONFIRM NEW PASSWORD</label>
+                            <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <button type="button" class="login-btn" style="flex: 1;" onclick="nextStep(2)">Back</button>
+                            <button type="button" class="login-btn" style="flex: 1;" onclick="resetPassword()">Reset Password</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-toggle">
+                        <a href="#" class="register-link" onclick="toggleLoginForm()">Back to Login</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Student Dashboard Screen -->
+        <section class="dashboard-screen" id="dashboardScreen" style="display:none;">
+            <nav class="dashboard-nav">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Lawrence&background=006837&color=fff" alt="User" class="user-avatar">
+                    <span class="user-name" id="userNameDisplay">Lawrence</span>
+                    <span class="user-role" id="userRoleDisplay">Student</span>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt icon"></i> Sign Out
+                </button>
+            </nav>
+            
+            <div class="dashboard-content">
+                <header class="content-header">
+                    <h2>Student Organization Dashboard</h2>
+                    <div class="current-date">August 17, 2025</div>
+                </header>
+                
+                <div class="dashboard-widgets">
+                    <h3>Available Clubs</h3>
+                    
+                    <!-- Ifugao Student Club -->
+                    <div class="club-card">
+                        <div class="club-header">
+                            <span class="club-name">Ifugao Student Club</span>
+                            <span class="club-fee">₱500 Registration Fee</span>
+                        </div>
+                        <p class="club-description">
+                            A cultural organization promoting Ifugao heritage and traditions through various activities and events.
+                        </p>
+                        <div class="club-actions">
+                            <button class="join-btn" onclick="joinClub('Ifugao Student Club')">Join Club</button>
+                            <span class="club-status status-pending" id="ifugao-status"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Kalanguya Club -->
+                    <div class="club-card">
+                        <div class="club-header">
+                            <span class="club-name">Kalanguya Club</span>
+                            <span class="club-fee">₱500 Registration Fee</span>
+                        </div>
+                        <p class="club-description">
+                            Dedicated to preserving and promoting the Kalanguya culture, language, and traditions.
+                        </p>
+                        <div class="club-actions">
+                            <button class="join-btn" onclick="joinClub('Kalanguya Club')">Join Club</button>
+                            <span class="club-status status-pending" id="kalanguya-status"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Chess Club -->
+                    <div class="club-card">
+                        <div class="club-header">
+                            <span class="club-name">Chess Club</span>
+                            <span class="club-fee">₱500 Registration Fee</span>
+                        </div>
+                        <p class="club-description">
+                            For chess enthusiasts of all skill levels. Join us for tournaments, training sessions, and friendly matches.
+                        </p>
+                        <div class="club-actions">
+                            <button class="join-btn" onclick="joinClub('Chess Club')">Join Club</button>
+                            <span class="club-status status-pending" id="chess-status"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Arts Club -->
+                    <div class="club-card">
+                        <div class="club-header">
+                            <span class="club-name">Arts Club</span>
+                            <span class="club-fee">₱500 Registration Fee</span>
+                        </div>
+                        <p class="club-description">
+                            Explore your creativity through various art forms including painting, sculpture, and digital arts.
+                        </p>
+                        <div class="club-actions">
+                            <button class="join-btn" onclick="joinClub('Arts Club')">Join Club</button>
+                            <span class="club-status status-pending" id="arts-status"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Dashboard Screen -->
+        <section class="dashboard-screen admin-dashboard" id="adminDashboard" style="display:none;">
+            <nav class="dashboard-nav">
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=006837&color=fff" alt="User" class="user-avatar">
+                    <span class="user-name" id="adminUserNameDisplay">Admin</span>
+                    <span class="user-role" id="adminUserRoleDisplay">Administrator</span>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt icon"></i> Sign Out
+                </button>
+            </nav>
+            
+            <div class="dashboard-content">
+                <header class="content-header">
+                    <h2>Administrator Dashboard</h2>
+                    <div class="current-date">August 17, 2025</div>
+                </header>
+                
+                <div class="admin-controls">
+                    <h3>System Management</h3>
+                    <div class="admin-actions">
+                        <button class="admin-action-btn" onclick="showDatabaseManager()">
+                            <i class="fas fa-database"></i> Database Management
+                        </button>
+                        <button class="admin-action-btn" onclick="showManagementSection('userManagement')">
+                            <i class="fas fa-users"></i> User Management
+                        </button>
+                        <button class="admin-action-btn" onclick="showManagementSection('clubManagement')">
+                            <i class="fas fa-clipboard-list"></i> Club Management
+                        </button>
+                        <button class="admin-action-btn" onclick="showManagementSection('paymentRecords')">
+                            <i class="fas fa-money-bill-wave"></i> Payment Records
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="database-section" id="databaseSection">
+                    <h3>Database Management</h3>
+                    <p>Manage and maintain the system database. You can backup, restore, or export data.</p>
+                    
+                    <div class="db-actions">
+                        <button class="db-btn" onclick="backupDatabase()">
+                            <i class="fas fa-save"></i> Backup Database
+                        </button>
+                        <button class="db-btn db-backup" onclick="restoreDatabase()">
+                            <i class="fas fa-history"></i> Restore Database
+                        </button>
+                        <button class="db-btn db-export" onclick="exportDatabase()">
+                            <i class="fas fa-file-export"></i> Export Data
+                        </button>
+                    </div>
+                    
+                    <div class="database-info" style="margin-top: 25px;">
+                        <h4>Database Status</h4>
+                        <table class="data-table">
+                            <tr>
+                                <th>Database Component</th>
+                                <th>Entries</th>
+                                <th>Status</th>
+                            </tr>
+                            <tr>
+                                <td>Users</td>
+                                <td id="dbUsersCount">0</td>
+                                <td>Operational</td>
+                            </tr>
+                            <tr>
+                                <td>Club Memberships</td>
+                                <td id="dbMembershipsCount">0</td>
+                                <td>Operational</td>
+                            </tr>
+                            <tr>
+                                <td>Payments</td>
+                                <td id="dbPaymentsCount">0</td>
+                                <td>Operational</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- User Management Section -->
+                <div class="management-section" id="userManagement">
+                    <div class="section-header">
+                        <h3 class="section-title">User Management</h3>
+                        <button class="close-section" onclick="closeManagementSection('userManagement')">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="add-btn" onclick="showAddUserModal()">
+                            <i class="fas fa-plus"></i> Add User
+                        </button>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Program</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userManagementTable">
+                            <!-- Users will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Club Management Section -->
+                <div class="management-section" id="clubManagement">
+                    <div class="section-header">
+                        <h3 class="section-title">Club Management</h3>
+                        <button class="close-section" onclick="closeManagementSection('clubManagement')">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                    
+                    <div class="action-bar">
+                        <button class="add-btn" onclick="showAddClubModal()">
+                            <i class="fas fa-plus"></i> Add Club
+                        </button>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Club Name</th>
+                                <th>Fee</th>
+                                <th>Members</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clubManagementTable">
+                            <!-- Clubs will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Payment Records Section -->
+                <div class="management-section" id="paymentRecords">
+                    <div class="section-header">
+                        <h3 class="section-title">Payment Records</h3>
+                        <button class="close-section" onclick="closeManagementSection('paymentRecords')">
+                            <i class="fas fa-times"></i> Close
+                        </button>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Student</th>
+                                <th>Club</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentRecordsTable">
+                            <!-- Payments will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- GCash Payment Modal -->
+        <div id="gcashModal" class="modal">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="close-modal" onclick="closeGCashModal()">&times;</span>
+                <h2 class="login-title">GCash Payment</h2>
+                
+                <div class="payment-details">
+                    <h3 id="gcashClubName">Club Name</h3>
+                    <p>Registration Fee: <strong id="gcashFeeAmount">₱500</strong></p>
+                    <p>Reference Number: <strong id="gcashRefNumber">NVSU-2025-001</strong></p>
+                </div>
+                
+                <div class="gcash-qr-container">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://gcash.com/pay/NVSU-Club-Registration" alt="GCash QR Code" class="gcash-qr">
+                    <p>Scan to pay via GCash</p>
+                </div>
+                
+                               
+                <div class="payment-actions">
+                    <button class="login-btn" onclick="verifyPayment()">
+                        <i class="fas fa-check-circle"></i> I've Completed Payment
+                    </button>
+                    <button class="login-btn payment-cancel-btn" onclick="closeGCashModal()">
+                        <i class="fas fa-times-circle"></i> Cancel Payment
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Success Modal -->
+        <div id="paymentSuccessModal" class="modal">
+            <div class="modal-content" style="text-align: center; max-width: 400px;">
+                <span class="close-modal" onclick="closePaymentSuccessModal()">&times;</span>
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="login-title">Payment Successful!</h2>
+                <p>Your club registration is now complete.</p>
+                <p>Transaction ID: <strong id="successTransactionId">NVSU-GCASH-12345</strong></p>
+                <button class="login-btn" onclick="closePaymentSuccessModal()" style="margin-top: 20px;">
+                    Done
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Database simulation using localStorage
+        class Database {
+            constructor() {
+                this.initDatabase();
+            }
+            
+            initDatabase() {
+                // Create database if it doesn't exist
+                if (!localStorage.getItem('nvsu_clubs_db')) {
+                    const db = {
+                        users: [
+                            { id: 1, id_number: '211-1023', password: '3976', name: 'Lawrence', role: 'student', 
+                              program: 'BSIT', year_level: '3rd', security_question: "What is your mother's maiden name?", 
+                              security_answer: 'Smith' },
+                            { id: 2, id_number: 'admin', password: '3976', name: 'Admin User', role: 'admin' }
+                        ],
+                        clubs: [
+                            { id: 1, name: 'Ifugao Student Club', fee: 500, description: 'A cultural organization promoting Ifugao heritage and traditions through various activities and events.' },
+                            { id: 2, name: 'Kalanguya Club', fee: 500, description: 'Dedicated to preserving and promoting the Kalanguya culture, language, and traditions.' },
+                            { id: 3, name: 'Chess Club', fee: 500, description: 'For chess enthusiasts of all skill levels. Join us for tournaments, training sessions, and friendly matches.' },
+                            { id: 4, name: 'Arts Club', fee: 500, description: 'Explore your creativity through various art forms including painting, sculpture, and digital arts.' }
+                        ],
+                        memberships: [],
+                        payments: []
+                    };
+                    localStorage.setItem('nvsu_clubs_db', JSON.stringify(db));
+                }
+            }
+            
+            getDatabase() {
+                return JSON.parse(localStorage.getItem('nvsu_clubs_db'));
+            }
+            
+            saveDatabase(db) {
+                localStorage.setItem('nvsu_clubs_db', JSON.stringify(db));
+            }
+            
+            // User management
+            getUserByIdNumber(id_number) {
+                const db = this.getDatabase();
+                return db.users.find(user => user.id_number === id_number);
+            }
+            
+            getUserById(id) {
+                const db = this.getDatabase();
+                return db.users.find(user => user.id === id);
+            }
+            
+            addUser(user) {
+                const db = this.getDatabase();
+                const existing = db.users.find(u => u.id_number === user.id_number);
+                
+                if (existing) {
+                    return false; // User already exists
+                }
+                
+                // Set new user ID
+                const newId = db.users.length > 0 ? Math.max(...db.users.map(u => u.id)) + 1 : 1;
+                user.id = newId;
+                
+                db.users.push(user);
+                this.saveDatabase(db);
+                return true;
+            }
+            
+            updateUser(userId, updates) {
+                const db = this.getDatabase();
+                const userIndex = db.users.findIndex(u => u.id === userId);
+                
+                if (userIndex !== -1) {
+                    db.users[userIndex] = { ...db.users[userIndex], ...updates };
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            deleteUser(userId) {
+                const db = this.getDatabase();
+                const initialLength = db.users.length;
+                db.users = db.users.filter(u => u.id !== userId);
+                
+                if (db.users.length < initialLength) {
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            // Club management
+            getClubs() {
+                const db = this.getDatabase();
+                return db.clubs;
+            }
+            
+            getClubById(id) {
+                const db = this.getDatabase();
+                return db.clubs.find(club => club.id === id);
+            }
+            
+            addClub(club) {
+                const db = this.getDatabase();
+                const existing = db.clubs.find(c => c.name === club.name);
+                
+                if (existing) {
+                    return false; // Club already exists
+                }
+                
+                // Set new club ID
+                const newId = db.clubs.length > 0 ? Math.max(...db.clubs.map(c => c.id)) + 1 : 1;
+                club.id = newId;
+                
+                db.clubs.push(club);
+                this.saveDatabase(db);
+                return true;
+            }
+            
+            updateClub(clubId, updates) {
+                const db = this.getDatabase();
+                const clubIndex = db.clubs.findIndex(c => c.id === clubId);
+                
+                if (clubIndex !== -1) {
+                    db.clubs[clubIndex] = { ...db.clubs[clubIndex], ...updates };
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            deleteClub(clubId) {
+                const db = this.getDatabase();
+                const initialLength = db.clubs.length;
+                db.clubs = db.clubs.filter(c => c.id !== clubId);
+                
+                if (db.clubs.length < initialLength) {
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            // Club membership
+            addMembership(user_id, club_id) {
+                const db = this.getDatabase();
+                const existing = db.memberships.find(m => m.user_id === user_id && m.club_id === club_id);
+                
+                if (!existing) {
+                    db.memberships.push({
+                        id: Date.now(),
+                        user_id,
+                        club_id,
+                        status: 'pending'
+                    });
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            getMembershipsByUser(user_id) {
+                const db = this.getDatabase();
+                return db.memberships.filter(m => m.user_id === user_id);
+            }
+            
+            getMembershipCountForClub(club_id) {
+                const db = this.getDatabase();
+                return db.memberships.filter(m => m.club_id === club_id && m.status === 'member').length;
+            }
+            
+            // Payments
+            getPayments() {
+                const db = this.getDatabase();
+                return db.payments;
+            }
+            
+            addPayment(user_id, club_id, reference, amount) {
+                const db = this.getDatabase();
+                db.payments.push({
+                    id: Date.now(),
+                    user_id,
+                    club_id,
+                    reference,
+                    amount,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                });
+                this.saveDatabase(db);
+            }
+            
+            verifyPayment(reference) {
+                const db = this.getDatabase();
+                const payment = db.payments.find(p => p.reference === reference);
+                if (payment) {
+                    payment.status = 'verified';
+                    
+                    // Update membership status
+                    const membership = db.memberships.find(m => 
+                        m.user_id === payment.user_id && 
+                        m.club_id === payment.club_id
+                    );
+                    if (membership) {
+                        membership.status = 'member';
+                    }
+                    
+                    this.saveDatabase(db);
+                    return true;
+                }
+                return false;
+            }
+            
+            // Database statistics
+            getUserCount() {
+                const db = this.getDatabase();
+                return db.users.length;
+            }
+            
+            getMembershipCount() {
+                const db = this.getDatabase();
+                return db.memberships.length;
+            }
+            
+            getPaymentCount() {
+                const db = this.getDatabase();
+                return db.payments.length;
+            }
+            
+            // Backup and restore
+            backupDatabase() {
+                const db = this.getDatabase();
+                const backup = {
+                    timestamp: new Date().toISOString(),
+                    data: db
+                };
+                localStorage.setItem('nvsu_clubs_backup', JSON.stringify(backup));
+                return backup;
+            }
+            
+            restoreDatabase() {
+                const backup = JSON.parse(localStorage.getItem('nvsu_clubs_backup'));
+                if (backup) {
+                    localStorage.setItem('nvsu_clubs_db', JSON.stringify(backup.data));
+                    return true;
+                }
+                return false;
+            }
+            
+            exportDatabase() {
+                const db = this.getDatabase();
+                return JSON.stringify(db, null, 2);
+            }
+        }
+
+        // Initialize the database
+        const db = new Database();
+        
+        // Global variables
+        let currentUser = null;
+        let currentRole = 'student';
+        let currentClubJoining = null;
+        let paymentReference = '';
+        let currentRecoveryStep = 1;
+        let recoveryUserId = null;
+        
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load database stats for admin
+            updateDatabaseStats();
+            
+            // Handle login form submission
+            document.getElementById('modalLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const idNumber = document.getElementById('modalIdNumber').value;
+                const password = document.getElementById('modalPassword').value;
+                
+                // Basic validation
+                if (!idNumber || !password) {
+                    alert('Please enter both ID number and password');
+                    return;
+                }
+                
+                // Show loading state
+                const loginBtn = document.querySelector('#modalLoginForm .login-btn');
+                loginBtn.textContent = 'Authenticating...';
+                loginBtn.disabled = true;
+                
+                // Check credentials
+                const user = db.getUserByIdNumber(idNumber);
+                
+                if (user && user.password === password) {
+                    // Check if user role matches the access type they selected
+                    if (user.role === currentRole) {
+                        // Successful login
+                        setTimeout(() => {
+                            closeLoginModal();
+                            currentUser = user;
+                            
+                            // Set user name and role
+                            if (user.role === 'admin') {
+                                document.getElementById('adminUserNameDisplay').textContent = user.name;
+                                document.getElementById('adminUserRoleDisplay').textContent = 'Administrator';
+                                document.getElementById('welcomeScreen').style.display = 'none';
+                                document.getElementById('adminDashboard').style.display = 'block';
+                            } else {
+                                document.getElementById('userNameDisplay').textContent = user.name;
+                                document.getElementById('userRoleDisplay').textContent = 'Student';
+                                document.getElementById('welcomeScreen').style.display = 'none';
+                                document.getElementById('dashboardScreen').style.display = 'block';
+                                updateMembershipStatus();
+                            }
+                            
+                            // Reset login button
+                            loginBtn.textContent = 'Login';
+                            loginBtn.disabled = false;
+                        }, 1000);
+                    } else {
+                        // Role doesn't match
+                        setTimeout(() => {
+                            alert(`You do not have ${currentRole} access. Please login as ${user.role}.`);
+                            // Reset login button
+                            loginBtn.textContent = 'Login';
+                            loginBtn.disabled = false;
+                        }, 1000);
+                    }
+                } else {
+                    setTimeout(() => {
+                        alert('Invalid credentials. Please try again.');
+                        // Reset login button
+                        loginBtn.textContent = 'Login';
+                        loginBtn.disabled = false;
+                    }, 1000);
+                }
+            });
+            
+            // Setup registration link
+            document.getElementById('registerLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                toggleRegisterForm();
+            });
+        });
+        
+        // Show login modal for selected role
+        function showLoginModal(role) {
+            currentRole = role;
+            const modal = document.getElementById('loginModal');
+            const title = document.getElementById('modalLoginTitle');
+            const roleText = document.getElementById('roleText');
+            
+            title.textContent = role === 'admin' ? 'Administrator Login' : 'Student Login';
+            roleText.textContent = role === 'admin' ? 'Administrator' : 'Student';
+            
+            // Reset forms to login
+            document.getElementById('modalLoginForm').style.display = 'block';
+            document.getElementById('modalRegisterForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            
+            // Show/hide fields based on role
+            if (role === 'admin') {
+                document.getElementById('studentFields').style.display = 'none';
+                document.getElementById('adminCodeField').style.display = 'block';
+            } else {
+                document.getElementById('studentFields').style.display = 'block';
+                document.getElementById('adminCodeField').style.display = 'none';
+            }
+            
+            modal.style.display = 'block';
+        }
+        
+        // Close login modal
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('modalIdNumber').value = '';
+            document.getElementById('modalPassword').value = '';
+        }
+        
+        // Toggle between login and registration forms
+        function toggleRegisterForm() {
+            const loginForm = document.getElementById('modalLoginForm');
+            const registerForm = document.getElementById('modalRegisterForm');
+            
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+        
+        // Toggle back to login form
+        function toggleLoginForm() {
+            document.getElementById('modalLoginForm').style.display = 'block';
+            document.getElementById('modalRegisterForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'none';
+            resetRecoverySteps();
+        }
+        
+        // Register a new user
+        function registerUser() {
+            const fullName = document.getElementById('regFullName').value;
+            const idNumber = document.getElementById('regIdNumber').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            // Basic validation
+            if (!fullName || !idNumber || !password || !confirmPassword) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (currentRole === 'admin') {
+                const adminCode = document.getElementById('adminCode').value;
+                if (adminCode !== 'admin123') {
+                    alert('Invalid admin code');
+                    return;
+                }
+            }
+            
+            // Create user object
+            const user = {
+                name: fullName,
+                id_number: idNumber,
+                password: password,
+                role: currentRole
+            };
+            
+            // Add student-specific fields
+            if (currentRole === 'student') {
+                user.program = document.getElementById('regProgram').value;
+                user.year_level = document.getElementById('regYearLevel').value;
+                user.security_question = "What is your mother's maiden name?";
+                user.security_answer = "Smith"; // In a real system, this would be user input
+            }
+            
+            // Add user to database
+            if (db.addUser(user)) {
+                alert('Registration successful! Please login with your credentials.');
+                toggleLoginForm();
+            } else {
+                alert('A user with this ID number already exists');
+            }
+        }
+        
+        // Update membership status on dashboard
+        function updateMembershipStatus() {
+            if (!currentUser) return;
+            
+            const memberships = db.getMembershipsByUser(currentUser.id);
+            const clubIdMap = {
+                'Ifugao Student Club': 1,
+                'Kalanguya Club': 2,
+                'Chess Club': 3,
+                'Arts Club': 4
+            };
+            
+            // Reset all statuses
+            document.querySelectorAll('.club-status').forEach(el => {
+                el.textContent = '';
+                el.className = 'club-status';
+            });
+            
+            // Update status for each club
+            memberships.forEach(membership => {
+                const clubName = Object.keys(clubIdMap).find(
+                    name => clubIdMap[name] === membership.club_id
+                );
+                
+                if (clubName) {
+                    const clubId = clubName.toLowerCase().replace(' ', '-');
+                    const statusEl = document.getElementById(`${clubId}-status`);
+                    if (statusEl) {
+                        statusEl.textContent = membership.status === 'member' ? 'Member' : 'Pending';
+                        statusEl.className = membership.status === 'member' ? 
+                            'club-status status-member' : 'club-status status-pending';
+                    }
+                }
+            });
+        }
+        
+        // Join club function - now shows GCash payment
+        function joinClub(clubName) {
+            if (!currentUser) {
+                alert('Please login first');
+                return;
+            }
+            
+            const clubIdMap = {
+                'Ifugao Student Club': 1,
+                'Kalanguya Club': 2,
+                'Chess Club': 3,
+                'Arts Club': 4
+            };
+            
+            const clubId = clubIdMap[clubName];
+            
+            // Check if user is already a member
+            const memberships = db.getMembershipsByUser(currentUser.id);
+            const existing = memberships.find(m => m.club_id === clubId);
+            
+            if (existing && existing.status === 'member') {
+                alert(`You are already a member of ${clubName}`);
+                return;
+            }
+            
+            currentClubJoining = clubName;
+            
+            // Add to memberships (pending)
+            db.addMembership(currentUser.id, clubId);
+            updateMembershipStatus();
+            
+            // Show payment modal
+            showGCashModal(clubName);
+        }
+
+        // Show GCash payment modal
+        function showGCashModal(clubName) {
+            const modal = document.getElementById('gcashModal');
+            document.getElementById('gcashClubName').textContent = clubName;
+            
+            // Generate a random reference number
+            paymentReference = 'NVSU-' + new Date().getFullYear() + '-' + Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('gcashRefNumber').textContent = paymentReference;
+            
+            modal.style.display = 'block';
+        }
+
+        // Close GCash modal
+        function closeGCashModal() {
+            document.getElementById('gcashModal').style.display = 'none';
+            currentClubJoining = null;
+        }
+
+        // Verify payment (simulated)
+        function verifyPayment() {
+            if (!currentUser || !currentClubJoining) return;
+            
+            const clubIdMap = {
+                'Ifugao Student Club': 1,
+                'Kalanguya Club': 2,
+                'Chess Club': 3,
+                'Arts Club': 4
+            };
+            
+            const clubId = clubIdMap[currentClubJoining];
+            
+            // Add payment to database
+            db.addPayment(currentUser.id, clubId, paymentReference, 500);
+            
+            // Verify payment
+            db.verifyPayment(paymentReference);
+            
+            closeGCashModal();
+            
+            // Show success modal
+            document.getElementById('successTransactionId').textContent = paymentReference;
+            document.getElementById('paymentSuccessModal').style.display = 'block';
+            
+            // Update UI
+            updateMembershipStatus();
+            
+            currentClubJoining = null;
+        }
+
+        // Close payment success modal
+        function closePaymentSuccessModal() {
+            document.getElementById('paymentSuccessModal').style.display = 'none';
+        }
+        
+        // Logout function
+        function logout() {
+            document.getElementById('dashboardScreen').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'block';
+            currentUser = null;
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const loginModal = document.getElementById('loginModal');
+            const gcashModal = document.getElementById('gcashModal');
+            const successModal = document.getElementById('paymentSuccessModal');
+            
+            if (event.target == loginModal) closeLoginModal();
+            if (event.target == gcashModal) closeGCashModal();
+            if (event.target == successModal) closePaymentSuccessModal();
+        }
+        
+        // Database management functions
+        function updateDatabaseStats() {
+            document.getElementById('dbUsersCount').textContent = db.getUserCount();
+            document.getElementById('dbMembershipsCount').textContent = db.getMembershipCount();
+            document.getElementById('dbPaymentsCount').textContent = db.getPaymentCount();
+        }
+        
+        function backupDatabase() {
+            db.backupDatabase();
+            alert('Database backup created successfully!');
+        }
+        
+        function restoreDatabase() {
+            if (confirm('Are you sure you want to restore the database from the last backup?')) {
+                if (db.restoreDatabase()) {
+                    alert('Database restored successfully!');
+                    updateDatabaseStats();
+                } else {
+                    alert('No backup found to restore from');
+                }
+            }
+        }
+        
+        function exportDatabase() {
+            const data = db.exportDatabase();
+            const blob = new Blob([data], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `nvsu-clubs-db-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function showDatabaseManager() {
+            alert('Database management section is already visible');
+        }
+        
+        // Show management section
+        function showManagementSection(sectionId) {
+            // Hide all sections first
+            document.querySelectorAll('.management-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show requested section
+            const section = document.getElementById(sectionId);
+            section.style.display = 'block';
+            
+            // Populate section data
+            switch(sectionId) {
+                case 'userManagement':
+                    populateUserManagement();
+                    break;
+                case 'clubManagement':
+                    populateClubManagement();
+                    break;
+                case 'paymentRecords':
+                    populatePaymentRecords();
+                    break;
+            }
+        }
+        
+        // Close management section
+        function closeManagementSection(sectionId) {
+            document.getElementById(sectionId).style.display = 'none';
+        }
+        
+        // Populate user management table
+        function populateUserManagement() {
+            const dbData = db.getDatabase();
+            const tableBody = document.getElementById('userManagementTable');
+            tableBody.innerHTML = '';
+            
+            dbData.users.forEach(user => {
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>${user.role}</td>
+                    <td>${user.program || '-'}</td>
+                    <td>
+                        <button class="db-btn" onclick="editUser(${user.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="db-btn db-backup" onclick="deleteUser(${user.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Populate club management table
+        function populateClubManagement() {
+            const clubs = db.getClubs();
+            const tableBody = document.getElementById('clubManagementTable');
+            tableBody.innerHTML = '';
+            
+            clubs.forEach(club => {
+                const memberCount = db.getMembershipCountForClub(club.id);
+                
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${club.id}</td>
+                    <td>${club.name}</td>
+                    <td>₱${club.fee}</td>
+                    <td>${memberCount}</td>
+                    <td>
+                        <button class="db-btn" onclick="editClub(${club.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="db-btn db-backup" onclick="deleteClub(${club.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Populate payment records table
+        function populatePaymentRecords() {
+            const payments = db.getPayments();
+            const dbData = db.getDatabase();
+            const tableBody = document.getElementById('paymentRecordsTable');
+            tableBody.innerHTML = '';
+            
+            payments.forEach(payment => {
+                const user = dbData.users.find(u => u.id === payment.user_id);
+                const club = dbData.clubs.find(c => c.id === payment.club_id);
+                
+                const paymentDate = new Date(payment.date);
+                const formattedDate = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth()+1).padStart(2, '0')}-${String(paymentDate.getDate()).padStart(2, '0')}`;
+                
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${payment.id}</td>
+                    <td>${user ? user.name : 'Unknown'}</td>
+                    <td>${club ? club.name : 'Unknown'}</td>
+                    <td>₱${payment.amount}</td>
+                    <td>${formattedDate}</td>
+                    <td>${payment.status}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+        
+        // Edit user
+        function editUser(userId) {
+            const user = db.getUserById(userId);
+            if (user) {
+                alert(`Edit user: ${user.name}\nThis would open an edit form in a real system.`);
+            }
+        }
+        
+        // Delete user
+        function deleteUser(userId) {
+            if (confirm('Are you sure you want to delete this user?')) {
+                if (db.deleteUser(userId)) {
+                    alert('User deleted successfully');
+                    populateUserManagement();
+                } else {
+                    alert('Failed to delete user');
+                }
+            }
+        }
+        
+        // Edit club
+        function editClub(clubId) {
+            const club = db.getClubById(clubId);
+            if (club) {
+                alert(`Edit club: ${club.name}\nThis would open an edit form in a real system.`);
+            }
+        }
+        
+        // Delete club
+        function deleteClub(clubId) {
+            if (confirm('Are you sure you want to delete this club?')) {
+                if (db.deleteClub(clubId)) {
+                    alert('Club deleted successfully');
+                    populateClubManagement();
+                } else {
+                    alert('Failed to delete club');
+                }
+            }
+        }
+        
+        // Password recovery functions
+        function showForgotPassword() {
+            document.getElementById('modalLoginForm').style.display = 'none';
+            document.getElementById('modalRegisterForm').style.display = 'none';
+            document.getElementById('forgotPasswordForm').style.display = 'block';
+            resetRecoverySteps();
+        }
+        
+        function resetRecoverySteps() {
+            currentRecoveryStep = 1;
+            document.getElementById('step1Content').style.display = 'block';
+            document.getElementById('step2Content').style.display = 'none';
+            document.getElementById('step3Content').style.display = 'none';
+            
+            document.getElementById('step1').classList.add('active-step');
+            document.getElementById('step2').classList.remove('active-step');
+            document.getElementById('step3').classList.remove('active-step');
+            
+            document.getElementById('forgotIdNumber').value = '';
+            document.getElementById('securityAnswer').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmNewPassword').value = '';
+        }
+        
+        function nextStep(step) {
+            currentRecoveryStep = step;
+            
+            // Update UI
+            document.getElementById('step1Content').style.display = step === 1 ? 'block' : 'none';
+            document.getElementById('step2Content').style.display = step === 2 ? 'block' : 'none';
+            document.getElementById('step3Content').style.display = step === 3 ? 'block' : 'none';
+            
+            document.getElementById('step1').classList.toggle('active-step', step === 1);
+            document.getElementById('step2').classList.toggle('active-step', step === 2);
+            document.getElementById('step3').classList.toggle('active-step', step === 3);
+        }
+        
+        function verifySecurityAnswer() {
+            const answer = document.getElementById('securityAnswer').value;
+            
+            if (!recoveryUserId) {
+                alert('User not found');
+                return;
+            }
+            
+            const user = db.getUserById(recoveryUserId);
+            
+            // In a real system, we would compare the answer to the stored one
+            if (answer && user) {
+                nextStep(3);
+            } else {
+                alert('Security answer is incorrect');
+            }
+        }
+        
+        function resetPassword() {
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            if (!newPassword || !confirmPassword) {
+                alert('Please enter both password fields');
+                return;
+            }
+            
+            if (newPassword !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            
+            if (!recoveryUserId) {
+                alert('User not found');
+                return;
+            }
+            
+            if (db.updateUser(recoveryUserId, { password: newPassword })) {
+                alert('Password has been reset successfully! Please login with your new password.');
+                toggleLoginForm();
+            } else {
+                alert('Failed to reset password');
+            }
+        }
+        
+        // Handle step 1 of password recovery
+        function nextStep(step) {
+            if (step === 2) {
+                const idNumber = document.getElementById('forgotIdNumber').value;
+                if (!idNumber) {
+                    alert('Please enter your ID number');
+                    return;
+                }
+                
+                const user = db.getUserByIdNumber(idNumber);
+                if (user) {
+                    recoveryUserId = user.id;
+                    currentRecoveryStep = 2;
+                    document.getElementById('step1Content').style.display = 'none';
+                    document.getElementById('step2Content').style.display = 'block';
+                    document.getElementById('step1').classList.remove('active-step');
+                    document.getElementById('step2').classList.add('active-step');
+                } else {
+                    alert('No user found with that ID number');
+                }
+            } else if (step === 3) {
+                currentRecoveryStep = 3;
+                document.getElementById('step2Content').style.display = 'none';
+                document.getElementById('step3Content').style.display = 'block';
+                document.getElementById('step2').classList.remove('active-step');
+                document.getElementById('step3').classList.add('active-step');
+            } else if (step === 1) {
+                currentRecoveryStep = 1;
+                document.getElementById('step2Content').style.display = 'none';
+                document.getElementById('step3Content').style.display = 'none';
+                document.getElementById('step1Content').style.display = 'block';
+                document.getElementById('step2').classList.remove('active-step');
+                document.getElementById('step3').classList.remove('active-step');
+                document.getElementById('step1').classList.add('active-step');
+            }
+        }
+    </script>
+</body>
+</html>
